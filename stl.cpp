@@ -6,6 +6,8 @@
 #include <iostream>
 #include <algorithm>
 #include <set>
+#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -59,7 +61,7 @@ void vectorDemo()
 
 void setDemo()
 {
-    set<int> s1; //set will automatically use a assent sortion.
+    set<int> s1; //set will automatically use a ascent sortion.
     s1.insert(1);
     s1.insert(10);
     s1.insert(0);
@@ -90,10 +92,84 @@ void setDemo()
         cout << "not present in this set.\n";
     }
 }
+
+void mapDemo()
+{
+    map<int, int> A;
+    A[1] = 100;
+    A[2] = -1;
+    A[3] = 200;
+    A[12389304] = 1;
+
+    map<char, int> cnt;
+    string x = "chuan chuan is awesome";
+
+    for (char c : x)
+    {
+        cnt[c]++;
+    }
+
+    cout << cnt['a'] << " " << cnt['c'] << endl;
+
+    for(auto pair : cnt)
+    {
+        cout << pair.first << " " << pair.second << endl;  // we can see that map is like set, follow a ascent of alphabet.
+    }
+}
+
+void powOfSet()
+{
+    set< pair<int, int> > S;
+    S.insert({401, 450});
+    S.insert({10,20});
+    S.insert({2,3});
+    S.insert({30,400});
+
+    //2,3
+    //10,20
+    //30, 400
+    //401,450
+
+    int point =402;
+    auto it = S.upper_bound({point, INT32_MAX});
+    if (it == S.begin())
+    {
+        cout << "the given point is not lying in any interval..\n";
+        return;
+    }
+    if (it == S.end())
+    {
+        cout << "man, you reached the end.\n";
+    }
+    it--;
+    pair<int, int> current = *it;
+    if(current.first <= point and point <= current.second)
+    {
+        cout << "yes, it's present: " << current.first << " " << current.second << endl;
+    }
+    else
+    {
+        cout << " the given point is not lying in there.\n ";
+    }
+
+}
+void unorderedMap()
+{
+    map<char, int> M;
+    unordered_map<char, int> U;
+
+    string s = "this is a great show.";
+    //add(key, value) map: O(logN)  unorderedmaps: O(1)
+    //erase(key) map: O(logN)  unorderedmaps: O(1)
+
+    for(char c : s) M[c]++; //O(NlogN) N= s's size.
+
+    for(char c : s) U[c]++; //O(N)  N means s's size.
+}
 int main()
 {
     //C++ STL
-    setDemo();
+    powOfSet();
 
     return 0;
 }
