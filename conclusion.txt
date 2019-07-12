@@ -1,0 +1,77 @@
+containers:
+    sequence containers:
+        vector, deque, list, forward list, array
+    associative containers(binary tree):
+        set, multiset
+        map, multimap
+    unordered containers(hash table)
+        unordered set/multiset
+        unordered map/multimap
+
+STL Headers
+#include<vector>
+#include<deque>
+#include<list>
+#include<set>  //set and multiset
+#include<map>  //map and multimap
+#include<unordered_set>  //unordered set/multiset
+#include<unordered_map>  //unordered map/multimap
+#include<iterator>
+#include<algorithm>
+#include<numeric>       //some numeric algorithm
+#include<functional>
+
+######
+vector
+######
+vector<int> vec;
+vec[2];  //no range chek
+vec.at(2);  //throw range_error exception of out of range.
+
+//for traversal
+opt.1
+for(int i ; i < vec.size(); i++){
+    cout << vec[i] <<" ";
+}
+
+opt.2
+for(vector<int>::iterator itr = vec.begin(); itr!=vec.end(); ++itr){
+    cout << *itr << " ";
+}
+
+opt.3
+for(auto it:vec){
+    cout << it << " ";  //just use it, it's not use *it to get the value.
+}
+
+
+//for opt.2 and opt.1, it's better to use opt.2, because it's much faster. and also,
+  it's suit for other's containers, like list etc.
+  you can also use opt.3, it seems easy to understand.
+
+killing point:
+    vecoter is a dynamically allocated contiguous array in the memory.
+    none of others containers is contiguous array in the memory.
+    so you can use a pointer like below:
+int* p = &vec[0];
+p[2] = 15; //because it's contiguous.
+
+
+
+######
+list
+######
+properties:
+1. fast insert/remove at any place: O(1)
+2. slow search : O(n) //actually is much slower than vector, beacause list is double
+                        linked list. first, it saved separately in the memory. second,
+                        it has 2 more header than vector for each item, which means more
+                        time than vector.
+3. no random access, no [] operator
+
+killing skill:
+
+mylist1.splice(itr, mylist2, itr_a, itr_b);  //O(1)
+//this function is cut the data in mylist2 from itr_a to itr_b, insert to mylist1 at the
+  itr location. and no matter how big is the data, only cost O(1).
+no other container can do this job!!!!

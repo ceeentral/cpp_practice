@@ -3,6 +3,7 @@
 //
 #include <string>
 #include <iostream>
+#include <vector>
 
 
 struct cat{
@@ -17,9 +18,25 @@ struct cat{
     uint32_t age;
 };
 
-int main(){
+
+void test_struct(){
     using namespace std;
     cat feichang{ "feichang", 2};
     cout << feichang.name << "\n" << feichang.varias << "\n" << feichang.age << endl;
+}
+
+
+void test_vector(){
+    std::vector<int> vec1;
+    vec1.push_back(1);
+    vec1.push_back(1100);
+    vec1.push_back(-100);
+
+    for(int it : vec1)
+        std::cout << it << " ";
+}
+int main(){
+
+    test_vector();
     return 0;
 }
