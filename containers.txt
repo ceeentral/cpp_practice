@@ -1,0 +1,249 @@
+containers:
+    sequence containers:
+        vector, deque, list, forward list, array
+    associative containers(binary tree):
+        set, multiset
+        map, multimap
+    unordered containers(hash table)
+        unordered set/multiset
+        unordered map/multimap
+
+STL Headers
+#include<vector>
+#include<deque>
+#include<list>
+#include<set>  //set and multiset
+#include<map>  //map and multimap
+#include<unordered_set>  //unordered set/multiset
+#include<unordered_map>  //unordered map/multimap
+#include<iterator>
+#include<algorithm>
+#include<numeric>       //some numeric algorithm
+#include<functional>
+
+######
+vector
+######
+properties:
+1. fast insert/remove at the end: O(1)
+2. slow insert/remove at the begining or in the middle: O(n)
+3. slow search : O(n)
+
+vector<int> vec;
+vec[2];  //no range chek
+vec.at(2);  //throw range_error exception of out of range.
+
+//for traversaing
+opt.1
+for(int i ; i < vec.size(); i++){
+    cout << vec[i] <<" ";
+}
+
+opt.2
+for(vector<int>::iterator itr = vec.begin(); itr!=vec.end(); ++itr){
+    cout << *itr << " ";
+}
+
+opt.3
+for(auto it:vec){
+    cout << it << " ";  //just use it, it's not use *it to get the value.
+}
+
+
+//for opt.2 and opt.1, it's better to use opt.2, because it's much faster. and also,
+  it's suit for other's containers, like list etc.
+  you can also use opt.3, it seems easy to understand.
+
+killing point:
+    vecoter is a dynamically allocated contiguous array in the memory.
+    none of others containers is contiguous array in the memory.
+    so you can use a pointer like below:
+int* p = &vec[0];
+p[2] = 15; //because it's contiguous.
+
+vec1.swap(vec);   //vec1 beacomes emypty, and vec has all items in vec1.
+
+######
+deque
+######
+properties:
+1. fast insert/remove at the begining and the end;
+2. slow insert/remove in the middle O(n)
+3. slow search O(n)
+
+
+deque<int> deq = {1,2,4,5};
+//deque has similar interface with vector
+
+
+######
+list
+  double linked list
+######
+properties:
+1. fast insert/remove at any place: O(1) //faster than vector/deque
+2. slow search : O(n) //actually is much slower than vector, beacause list is double
+                        linked list. first, it saved separately in the memory. second,
+                        it has 2 more header than vector for each item, which means more
+                        time than vector.
+3. no random access, no [] operator
+
+killing skill:
+
+mylist1.splice(itr, mylist2, itr_a, itr_b);  //O(1)
+//this function is cut the data in mylist2 from itr_a to itr_b, insert to mylist1 at the
+  itr location. and no matter how big is the data, only cost O(1).
+no other container can do this job!!!!
+
+
+######
+array
+######
+container array has 2 limitation:
+1.size can not be changed.
+2.two array of integer may have different type. //example like below:
+
+array<int, 3> a ={3,4,5};
+array<int, 4> b ={3,4,5,5};
+if there is a function can accept array a , then it can not accept array b, because it different type.
+
+
+
+Associative Container. //always sorted. default criteria is < and no push_back() or push_front()
+###############
+set
+  no duplicates
+###############
+1. fast search : O(log(n))
+2. traversing is slow (compare to vector & deque)
+3. no random access, no [] operator.
+
+
+
+set<int> myset;
+myset.insert(3); //3
+myset.insert(1); //1,3
+myset.insert(7); //1,3,7   O(log(n))
+
+set<int>::iterator it;
+it = myset.find(7)  //O(log(n))  faster than sequence container
+
+pair<set<int>::iterator, bool> ret;
+ret = myset.insert(3); //becuase set not allowed duplicates, so no new element inserted. ret = false
+
+
+
+###############
+multiset
+  allow duplicate
+###############
+
+multiset<int> myset;
+
+*it = 10; //can't do this. *it is read-only.  set/multiset : value of the elements cannnot be modified.
+
+
+
+
+###############
+map
+  no duplicated keys
+###############
+map<char, int> mymap;
+mymap.insert (pair<char, int>('a', 100);
+mymap.insert (make_pair('z', 200);
+
+map<char, int>::iterator it = mymap.begin();
+mymap.insert(it, pair<char, int>('b', 300));  //it is a hint
+
+it = mymap.find('z') //O(log(n))
+
+//show content
+for(it=mymap.begin(); it!=mymap.end(); it++)
+    cout << (*it).first << " =>" << (*it).second << endl;
+
+//multimap is a map that allows duplicated keys
+multimap<char, int> mymap;
+
+
+//map/multimap
+// --key cannot be modified
+// type of *it pair<const char, int>
+(*it).first = 'd'; //error
+
+
+
+
+unordered containers
+###############
+unordered set
+###############
+properties of unordered containers:
+1. fastest search/insert at any place: O(1)
+   associative container takes O(log(n))
+   vector deque takes O(n)
+   list takes O(1) to insert, O(n) to search.
+2.unordered set/multiset : element value cannot be changed
+  unordered map/multimap : element key   cannot be changed
+
+
+unordered_set<string> myset = {"red", "green", "blue"};
+unordered_set<string>::const_iterator itr = myset.find("green"); //O(1)
+if(itr !=myset.end())
+    cout << *itr << endl;
+myset.insert("yellow");  //O(1)
+
+vector<string> vec = {"purple", "pink"};
+myset.insert(vec.begin(), vec.end());
+
+//hash table specific APIs:
+cout << "load_factor" << myset.load_factor() << endl;
+string x = "red";
+cout << x << " is in bucket $" << myset.bucket(x) << endl;
+cout << "total bucket #" << myset.bucket_count() << endl;
+
+
+//unordered multiset : unordered set that allows duplicated elements
+//unordered map: unordered set of pairs
+//unordered multimap: unordered map that allows duplicated elements
+
+//hash collision => performance degrade.   hash collision means many items are inserted in the same buckets.
+
+
+###############
+associative array
+  map and unordered map
+###############
+properties:
+1. search time: unordered_map, O(1); map, O(log(n));
+2. unordered_map may degrade to O(n)
+3. can't use multimap and unordered_multimap, they don't have [] operator
+
+
+
+
+unordered_map<char, string> day = {{'S', "sunday"}, {'M', "monday"}};
+cout << day['S'] << endl;  //no range check
+cout << day.at('S') << endl; //has range check
+
+vector<int> vec = {1,2,3};
+vec[5] = 5; // compile error. because there is no vec[5]
+
+day['W'] = "wednesday"; // inserting {'W', "wednesday"}
+day.insert(make_pair('F', "friday"));  //inserting {'F', "friday"}
+
+day.insert(make_pair('M', "MONDAY")); //fail to modify, insert can use for change the value.
+day['M'] = "MONDAY";  // succeed to modify. this will cause a problem, see below.
+
+which means [] could have the write authority for data.
+when we use a function like below
+void foo(const unordered_map<char, string>& m){
+    m['S'] = "SUNDAY";  //can't compile because map is const
+    cout << m['S'] << endl;  //can't compile too! because [] will give write authority, even you're going to read it only.
+    auto itr = m.find('S');
+    if(itr != m.end())
+    {
+        cout << *itr << endl;
+    }
+}
+}

@@ -1,0 +1,132 @@
+//
+// Created by old central on 2019/7/15.
+//
+#include <algorithm>
+#include <vector>
+#include<iterator>
+
+using namespace std;
+//Iterators
+// there are five catagroies of iterators.
+// 1. Random access Iterator: vector, deque, array
+std::vector<int> itr;
+itr = itr + 5; //advance itr by 5
+itr = itr - 4;
+if(itr2 > itr1)  //compare
+    ++itr; //faster than itr++, because don't have to return the old value to the table.
+    --itr;
+
+
+// 2. bidirectional Iterator: list, set/multiset, map/multimap
+list<int> itr; // cannot compare or add or subtract
+++itr;
+--itr;
+
+// 3. forward iterator: forward_list
+forward_list<int> itr;
+++itr; //no --itr;
+// unordered containers provide "at least" forward iterators, also cloud have bidirectional iterator according to the
+// implemention of the STL.
+
+// 4. Input iterators: read and process values while iterating forward (no backward)
+int x = *itr // only read, can't write
+
+// 5. Output iterators: output values while iterating forward
+*itr = 100;
+
+
+//every container has a iterator and a const_iterator
+set<int>::iterator itr;
+set<int>::const_iterator citr;
+
+set<int> myset = {2,4,5,1,9};
+for(citr = myset.begin(); citr != myset.end(); ++citr)
+{
+    cout << *citr << endl;
+    //*citr = 3;  cannot compile. cannot modify the value of const.
+}
+for_each(myset.cbegin(), myset.cend(), Myfunction); // working after C11
+
+
+// Iterator functions
+advance(itr, 5); // move itr forward 5 spots;   for all iterators.
+distance(itr1, itr2); // measure the distance between itr1 and itr2;  for non-random access iterators
+
+
+// Iterator adptor (predefined iterator) - A special, more powerful iterator
+// 1. Insert iterator
+// 2. Stream iterator
+// 3. Reverse iterator
+// 4. Move iterator
+
+
+// 1. Insert iterator
+
+vector<int> vec1 = {4, 5};
+vector<int> vec2 = {12, 14, 17, 18};
+vector<int>::iterator it = find(vec2.begin(), vec2.end(), 17);
+insert_iterator< vector<int> > i_itr(vec2, it);
+copy(vec1.begin(), vec1.end(), //source
+        i_itr);                //destination
+        //vec2: {12, 14, 4, 5, 17, 18}
+// other insert iterators: back_insert_iterator, front_insert_iterator
+
+// 2. Stream Iterator
+vector<string> vec4;
+copy(istream_iterator<string>(cin), istream_iterator<string>(),
+        back_inserter(vec4));
+    // istream_iterator<string>(cin) represent input from standard input,
+    // istream_iterator<string>() represent the end of standard input.
+    // back_inserter() is a function that return  back_insert_iterator(which means it return a iterator)
+    // the whole sentence means copy input to vec4 at the back.
+copy(vec4.begin(), vec4.end(), ostream_iterator<string>(cout, " "));
+    // the whole sentence means copy all content in vec4 to ostream, and each item separate with a space.
+
+
+// make it terse, combine both sentence to 1
+copy(istream_iterator<string>(cin), istream_iterator<string>(), ostream_iterator<string>(cout, " "));
+
+// 3. Reverse iterator
+vector<int> vec = {4, 5, 6, 7};
+reverse_iterator<vector<int>::iterator> ritr;
+for(ritr=vec.rbegin(); ritr != vec.rend(); ritr++)
+    cout << *ritr << endl; //print 7,6,5,4
+
+
+
+// Algorithms - mostly loops
+vector<int> vec = {4, 2, 5, 1, 3, 9};
+vector<int>::iterator itr = min_element(vec.begin(), vec.end());  //itr -> 1
+
+//Note 1: Algorithms always process ranges in a half-open way: [begin, end)
+sort<vec.begin(), itr);  // vec: {2,4,5,1,3,9}
+reverse(itr, vec.end()); //vec: {2,4,5,9,3,1} itr=>9
+
+
+//Note 2:
+vector<int> vec2(3);
+copy(itr, vec.end(),  // source
+        vec2.begin()); // destination
+        //vec2 needs to have at least space for 3 elements.  efficient but not safe
+
+// Note 3:
+vector<int> vec3;
+copy(itr, vec.end(), back_insert(vec3));  //inserting instead of writing, but insert 1 once a time
+                      // back_insert_iterator   safe not efficient
+
+vec3.insert(vec3.end(),   // destination
+            itr, vec.end());  //source     efficient and safe
+
+// Note 4: Algorithm with function
+bool isOdd(int i){
+    return i%2;
+}
+int main() {
+    vector<int> vec = {2, 4, 5, 9, 2};
+    vector<int>::iterator itr = find_if(vec.begin(); vec.end(), isOdd);
+            //itr ->5
+}
+
+
+
+

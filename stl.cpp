@@ -8,6 +8,7 @@
 #include <set>
 #include <map>
 #include <unordered_map>
+#include<iterator>
 
 using namespace std;
 
@@ -166,10 +167,41 @@ void unorderedMap()
 
     for(char c : s) U[c]++; //O(N)  N means s's size.
 }
+
+void mapDemo2()
+{
+    map<char, int> mymap;
+    mymap.insert (pair<char, int>('a', 100));
+    mymap.insert (make_pair('z', 200));
+
+    map<char, int>::iterator it = mymap.begin();
+    mymap.insert(it, pair<char, int>('b', 300));  //it is a hint
+
+    it = mymap.find('z'); //O(log(n))
+
+//show content
+    for(it=mymap.begin(); it!=mymap.end(); it++)
+        cout << (*it).first << " =>" << (*it).second << endl;
+
+//multimap is a map that allows duplicated keys
+    multimap<char, int> myMultimap;
+
+
+//map/multimap
+// --key cannot be modified
+// type of *it pair<const char, int>
+//    (*it).first = 'd'; //error
+
+}
+
+void streamIteratorDemo()
+{
+    copy(istream_iterator<string>(cin), istream_iterator<string>(), ostream_iterator<string>(cout, ", "));
+}
 int main()
 {
     //C++ STL
-    powOfSet();
+    streamIteratorDemo();
 
     return 0;
 }
