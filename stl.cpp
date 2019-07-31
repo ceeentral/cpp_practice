@@ -9,6 +9,7 @@
 #include <map>
 #include <unordered_map>
 #include<iterator>
+#include <sstream>
 
 using namespace std;
 
@@ -198,10 +199,49 @@ void streamIteratorDemo()
 {
     copy(istream_iterator<string>(cin), istream_iterator<string>(), ostream_iterator<string>(cout, ", "));
 }
+
+void parseStringStreamPrint()
+{
+    // stringstream can parse string to integers
+    stringstream ss("25,1,32");
+    int s;
+    char a;
+    while(ss >> s >> a) //loop when ss can extract to int and char. for the last integer, out of loop
+    {
+        cout << "you made it." << endl;
+        cout << s << endl;
+    }
+    ss >> s;  // have to made another extract.
+    cout << s << endl;
+}
+
+void writeData2StringStream()
+{
+    stringstream ss;
+    int age =14;
+    string name = "chuan";
+    int score = 12;
+    ss << age << "," <<name<< ","<< score;
+    cout << ss.str() << endl;
+}
 int main()
 {
-    //C++ STL
-    streamIteratorDemo();
-
+    string i ;
+    cout << "input your scores\n";
+    getline(std::cin,i);
+    cout << i <<endl;
+    vector<int> scores;
+    stringstream ss(i);
+    int grade;
+    char ch;
+    while (ss >> grade >> ch)
+    {
+        scores.push_back(grade);
+    }
+    ss >> grade;
+    scores.push_back(grade);
+    for(int a = 0; a < scores.size(); ++a){
+        cout << scores.at(a) << endl;
+    }
     return 0;
 }
