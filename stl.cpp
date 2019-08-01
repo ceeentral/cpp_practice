@@ -224,8 +224,8 @@ void writeData2StringStream()
     ss << age << "," <<name<< ","<< score;
     cout << ss.str() << endl;
 }
-int main()
-{
+
+void getline_sstream(){
     string i ;
     cout << "input your scores\n";
     getline(std::cin,i);
@@ -233,15 +233,74 @@ int main()
     vector<int> scores;
     stringstream ss(i);
     int grade;
-    char ch;
-    while (ss >> grade >> ch)
+    char ch; // no need char, in sstream class, it will automatically identify space~, not like comma in function  parseStringStreamPrint()
+    while (ss>>grade)
     {
         scores.push_back(grade);
     }
-    ss >> grade;
-    scores.push_back(grade);
     for(int a = 0; a < scores.size(); ++a){
         cout << scores.at(a) << endl;
     }
+
+}
+class Student
+{
+public:
+    int calculateTotalScore(){
+        int sum=0;
+        for(int i =0; i<5; ++i)
+        {
+
+            sum +=scores[i];
+            cout << sum << endl;
+        }
+        return sum;
+    }
+    void input(){
+        string str;
+        cout << "why you not stop\n";
+        getline(std::cin, str);
+        cout << str << endl;
+        //vector<int> tmpVec;
+        stringstream ss(str);
+        int grade;
+        while ( ss >> grade)
+        {
+            scores.push_back(grade);
+        }
+        for(int i=0; i<scores.size(); ++i)
+            cout << scores[i] << endl;
+    }
+private:
+    vector<int> scores;
+};
+
+
+int main()
+{
+    int n; // number of students
+    cout << "please input number of students\n";
+    cin >> n;
+    Student *s = new Student[n]; // an array of n students
+    cin.ignore();
+    for(int i = 0; i < n; i++){
+        cout << "please input " << i << " students grades\n";
+        s[i].input();
+    }
+
+    // calculate kristen's score
+    int kristen_score = s[0].calculateTotalScore();
+    cout << kristen_score << endl;
+    // determine how many students scored higher than kristen
+    int count = 0;
+    for(int i = 1; i < n; i++){
+        int total = s[i].calculateTotalScore();
+        if(total > kristen_score){
+            count++;
+        }
+    }
+
+    // print result
+    cout << count;
     return 0;
 }
