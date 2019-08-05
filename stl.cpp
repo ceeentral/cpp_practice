@@ -275,8 +275,7 @@ private:
     vector<int> scores;
 };
 
-
-int main()
+void checkCinIgnore()
 {
     int n; // number of students
     cout << "please input number of students\n";
@@ -302,5 +301,10 @@ int main()
 
     // print result
     cout << count;
+}
+
+int main()
+{
+
     return 0;
 }
