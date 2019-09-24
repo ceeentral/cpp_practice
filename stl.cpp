@@ -273,10 +273,12 @@ public:
     }
 private:
     vector<int> scores;
+    static int chuan;
 };
 
 void checkCinIgnore()
 {
+
     int n; // number of students
     cout << "please input number of students\n";
     cin >> n;
@@ -305,6 +307,10 @@ void checkCinIgnore()
 
 int main()
 {
+
+
+    Student Student::chuan;
+    //cout << Student::chuan << "\n";
 
     return 0;
 }
